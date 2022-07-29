@@ -1,38 +1,30 @@
 // HERE WE ARE USING CONTEXT PROVIDER TO PROVIDE ALL THE NECESSARY DATA TO COMPONENTS
 
 import { gql, useSubscription } from "@apollo/client";
-import { createContext, ReactChildren, useContext } from "react";
+import { createContext, useContext } from "react";
 
-const AllSubsContext = createContext({});
-export const AllSubsProvider = ({ children }) => {
-  const query = gql`
-    query allMessages {
-      allMessages {
-        id
-        createdAt
-        text
-        author
-      }
+const sub = gql`
+  subscription NewMessage {
+    newMessage {
+      id
+      createdAt
+      text
+      author
     }
-  `;
+  }
+`;
 
-  const sub = gql`
-    subscription NewMessage {
-      newMessage {
-        id
-        createdAt
-        text
-        author
-      }
-    }
-  `;
+const subCount = gql`
+  subscription count {
+    messagesCount
+  }
+`;
 
-  const subCount = gql`
-    subscription count {
-      messagesCount
-    }
-  `;
-
+const AllSubsContext = createContext<{
+  latestMessage?: any;
+  latestCount?: any;
+}>({});
+export const AllSubsProvider = ({ children }: any) => {
   const { data: latestMessage } = useSubscription(sub);
   const { data: latestCount } = useSubscription(subCount);
 
@@ -42,6 +34,8 @@ export const AllSubsProvider = ({ children }) => {
     </AllSubsContext.Provider>
   );
 };
+
+// HERE WE ARE USING CONTEXT CONSUMER TO CONSUME THE DATA FROM CONTEXT PROVIDER
 
 const LatestMessage = () => {
   const { latestMessage } = useContext(AllSubsContext);
