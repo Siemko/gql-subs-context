@@ -1,0 +1,18 @@
+{
+  "name": "database",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w --preserveWatchOutput"
+  },
+  "devDependencies": {
+    "prisma": "^4.1.1"
+  },
+  "dependencies": {
+    "@nestjs/common": "^9.0.7",
+    "@prisma/client": "^4.1.1",
+    "tsconfig": "*"
+  }
+}
